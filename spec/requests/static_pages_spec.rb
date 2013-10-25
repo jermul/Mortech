@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe "Static Pages" do
 
+	let(:title) { "Mortech Manufacturing Inc."}
+
 	describe "Home page" do
 	  it "should have the content 'Mortech'" do
 		  visit '/static_pages/home'
@@ -10,7 +12,7 @@ describe "Static Pages" do
 
 	  it "should have the title 'Home'" do
 	  	visit '/static_pages/home'
-	  	expect(page).to have_title("Mortech Manufacturing Inc. | Home")
+	  	expect(page).to have_title("#{title} | Home")
 	  end
 	end
 	
@@ -22,7 +24,19 @@ describe "Static Pages" do
 
 		it "should have the title 'About'" do
 			visit '/static_pages/about'
-			expect(page).to have_title("Mortech Manufacturing Inc. | About")
+			expect(page).to have_title("#{title} | About")
+		end
+	end
+
+	describe "Contact page" do
+		it "should have the content 'Contact Us'" do
+			visit '/static_pages/contact'
+			expect(page).to have_content('Contact Us')
+		end
+
+		it "should have the title 'Contact'" do
+			visit '/static_pages/contact'
+			expect(page).to have_title('Contact')
 		end
 	end
 end
