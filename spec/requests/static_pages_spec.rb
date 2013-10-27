@@ -16,14 +16,25 @@ describe "Static Pages" do
 		before { visit about_path }
 		
 		it { should have_content('About Us') }
-		it { should have_title('About')}
+		it { should have_title(full_title('About')) }
 	end
 
 	describe "Contact page" do
 		before { visit contact_path }
 		
 		it { should have_content('Contact Us') }
-		it { should have_title('Contact') }
+		it { should have_title(full_title('Contact')) }
+	end
+
+	it "should have the right links on the layout" do
+		visit root_path
+		click_link "About"
+		expect(page).to have_title(full_title('About'))
+		click_link "Contact"
+		expect(page).to have_title(full_title('Contact'))
+		click_link "Home"
+		click_link "Sign up now!"
+		expect(page).to have_title(full_title('Sign Up'))
 	end
 end
 
