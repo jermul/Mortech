@@ -1,5 +1,27 @@
-<div class="center hero-unit">
-  <h1>Welcome to Mortech Manufacturing!</h1>
-  <h2>This is the home page for <a href="http://mortechmfg.com/">Mortech</a></h2>
-  <%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary" %>
-</div>
+<% if signed_in? %>
+  <div class="row">
+    <aside class="span4">
+      <section>
+        <%= render 'shared/user_info' %>
+      </section>
+      <section>
+        <%= render 'shared/itinerary_form' %>
+      </section>
+    </aside>
+    <div class="span8">
+      <h3>Itinerary Feed</h3>
+      <%= render 'shared/feed' %>
+    </div>
+  </div>
+<% else %>
+  <div class="center hero-unit">
+    <h1>Welcome to Mortech!</h1>
+
+    <h2>
+      placeholder text.
+    </h2>
+
+    <%= link_to "Sign up now!", signup_path,
+                                class: "btn btn-large btn-primary" %>
+  </div>
+<% end %>

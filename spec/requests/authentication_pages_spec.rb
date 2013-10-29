@@ -93,6 +93,19 @@ describe "Authentication" do
           specify { expect(response).to redirect_to(root_url) }
         end
       end
+
+      describe "in the Itineraries controller" do
+
+        describe "submitting to the create action" do
+          before { post itineraries_path }
+          specify { expect(response).to redirect_to(signin_path) }
+        end
+
+        describe "submitting to the destroy action" do
+          before { delete itinerary_path(FactoryGirl.create(:itinerary)) }
+          specify { expect(response).to redirect_to(signin_path) }
+        end
+      end
     end
 
     describe "as wrong user" do

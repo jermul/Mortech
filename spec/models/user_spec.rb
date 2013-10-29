@@ -17,6 +17,8 @@ describe User do
   it { should respond_to(:remember_token) }
 	it { should respond_to(:authenticate) }
   it { should respond_to(:admin) }
+  it { should respond_to(:itineraries) }
+  it { should respond_to(:feed) }
 
 	it { should be_valid }
   it { should_not be_admin }
@@ -113,5 +115,39 @@ describe User do
   describe "remember token" do
     before { @user.save }
     its(:remember_token) { should_not be_blank }
+  end
+
+  describe "itinerary associations" do
+
+    before { @user.save }
+    let!(:older_itinerary) do
+      FactoryGirl.create(:itinerary, user: @user, created_at: 1.day.ago)
+    end
+    let!(:newer_itinerary) do
+      FactoryGirl.create(:itinerary, user: @user, created_at: 1.hour.ago)
+    end
+
+    it "should have the right itineraries in the right order" do
+      expect(@user.itineraries.to_a).to eq [newer_itinerary, older_itinerary]
+    end
+
+    it "should destroy associated itineraries" do
+      itineraries = @user.itineraries.to_a
+      @user.destroy
+      expect(itineraries).not_to be_empty
+      itineraries.each do |itinerary|
+        expect(Itinerary.where(id: itinerary.id)).to be_empty
+      end
+    end
+
+    describe "status" do
+      let(:unfollowed_post) do
+        FactoryGirl.create(:itinerary, user: FactoryGirl.create(:user))
+      end
+
+      its(:feed) { should include(newer_itinerary) }
+      its(:feed) { should include(older_itinerary) }
+      its(:feed) { should_not include(unfollowed_post) }
+    end
   end
 end

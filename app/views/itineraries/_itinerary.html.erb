@@ -1,0 +1,11 @@
+<li>
+  <span class="content"><%= itinerary.content %></span>
+  <span class="timestamp">
+    Posted <%= time_ago_in_words(itinerary.created_at) %> ago.
+  </span>
+  <% if current_user?(itinerary.user) %>
+    <%= link_to "delete", itinerary, method: :delete,
+                                     data: { confirm: "You sure?" },
+                                     title: itinerary.content %>
+  <% end %>
+</li>
